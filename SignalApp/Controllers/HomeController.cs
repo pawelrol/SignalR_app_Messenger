@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SignalApp.Data;
 using SignalApp.Models;
 
 namespace SignalApp.Controllers
@@ -15,12 +16,45 @@ namespace SignalApp.Controllers
     public class HomeController : Controller
     {
         private UserManager<IdentityUser> _mgr;
+        private ApplicationDbContext _db;
 
 
-        public HomeController(UserManager<IdentityUser> mgr)
+        public HomeController(UserManager<IdentityUser> mgr, ApplicationDbContext db)
         {
+            _db = db;
             _mgr = mgr;
 
+        }
+
+
+        public IActionResult Search(string query)
+        {
+            var result = _db.Users.Where(x => x.UserName.StartsWith(query)).ToList();                  // mamy wjazd do Users bo nasz wybraliśmy sobie wceśniej jak stawialiśmy projekt na początku więc on sobie zrobiłsam te klasy odpowiednie, dlatego w bazie danych zrobily się same takie tabele, one są przed nami ukryte ale są normalnie jak zwykłę model i tabele w klasie kontekstowej
+                                                                                                        // nasz result to lista wszystkich UserNamów zaczynających się na toco mu wpiszemy w wyszukiwarce w formularzu
+            return View(result);
+        }
+
+        public JsonResult AddFriend(string id)                  //wywołujemy Ajaxem więc musi być JsonResult
+        {
+            FriendList list = new FriendList();                 //to jest nasza lista znajomych danego usera
+            list.FriendId = id;                                 //dodajemy mu frined Id
+            //zalogowany userId
+            string userId = _mgr.GetUserId(HttpContext.User);   //wyciągamy od zalogowanego użytkownika jego Id - ono istniej w kontekscie
+
+            if(                                                                                 //sprawdzamy czy użytkownicy już nie mają siew znajomych albo jeden drugiego, albo drugi pierwszego
+                !_db.FriendLists.Any(x => x.UserId == x.FriendId && x.FriendId == id)
+                && 
+                !_db.FriendLists.Any(x => x.UserId == id && x.FriendId == userId)
+               )
+            {
+                list.UserId = userId;                               //dodajemy jego Id
+                _db.FriendLists.Add(list);                          //aktualizujemy bazę danych
+                _db.SaveChanges();                                  //zapisujemy do bazy danych
+            }
+
+            
+
+            return Json(true);
         }
 
         public IActionResult Index()

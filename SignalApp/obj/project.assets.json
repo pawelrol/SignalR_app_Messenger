@@ -12581,11 +12581,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Pawel\\source\\repos\\SignalApp\\SignalApp\\SignalApp.csproj",
+      "projectUniqueName": "C:\\Users\\Pawel\\source\\repos\\SignalApp2\\SignalApp\\SignalApp.csproj",
       "projectName": "SignalApp",
-      "projectPath": "C:\\Users\\Pawel\\source\\repos\\SignalApp\\SignalApp\\SignalApp.csproj",
+      "projectPath": "C:\\Users\\Pawel\\source\\repos\\SignalApp2\\SignalApp\\SignalApp.csproj",
       "packagesPath": "C:\\Users\\Pawel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Pawel\\source\\repos\\SignalApp\\SignalApp\\obj\\",
+      "outputPath": "C:\\Users\\Pawel\\source\\repos\\SignalApp2\\SignalApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
