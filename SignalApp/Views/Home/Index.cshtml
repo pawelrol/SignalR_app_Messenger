@@ -1,11 +1,33 @@
-﻿<script src="~/lib/jquery/dist/jquery.js"></script>
+﻿@model List<IdentityUser>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
 
 <div class="container">
     <form asp-action="search">
         <input type="text" class="form-group" name="query" />
-        <input type="submit" class="btn btn-info" value="Szukaj"/>
-</form>
+        <input type="submit" class="btn btn-info" value="Szukaj" />
+    </form>
 
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            @foreach (var user in Model)
+            {
+            <h4 class="friend">
+                <span name="@user.Id" id="">&#9679; @user.UserName</span>
+            
+                
+            
+            </h4>
+            }
+        </div>
+        <div class="col-lg-8">
+            
+        </div>
+
+    </div>
 </div>
 
 

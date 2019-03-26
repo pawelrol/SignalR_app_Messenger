@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using SignalApp.Models;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,14 @@ namespace SignalApp
 
             user.ConnectionId = conId;
             user.Id = _mgr.GetUserId(_httpContext.HttpContext.User);            //controllety dziedziczą HttpContext, tutaj musieliśmy go wstrzyknąć do konstruktora żeby go mieć
-            connectedUsers.Add(user);                                           //dodajemy naszego usera do listy userów podłączonych - będziemy mogli ich szukać po UserId, bo to nasze connectionId się zmienia
+            connectedUsers.Add(user);         
+            //dodajemy naszego usera do listy userów podłączonych - będziemy mogli ich szukać po UserId, bo to nasze connectionId się zmienia
+
+            Clients.All.SendAsync("ReciveMessage2", user.Id, conId);
+
+            var json = JsonConvert.SerializeObject(connectedUsers);
+
+           //  Clients.All.SendAsync("ReciveMessage3", json);
 
             return base.OnConnectedAsync();
         }

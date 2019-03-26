@@ -12,3 +12,13 @@ $("#sendButton").click(function () {
 connection.on("ReciveMessage", function (user, message) {       //invoke wrzucamy na server i metoda on - ortrzymaj coś z servera/ nasz klient który wysyłą też otrzyma to co wysyła
     alert(user + " " + message);
 });
+
+connection.on("ReciveMessage2", function (userId, conId) {       //invoke wrzucamy na server i metoda on - ortrzymaj coś z servera/ nasz klient który wysyłą też otrzyma to co wysyła
+    $("[name='" + userId + "']").attr('id', conId);
+    $("[name='" + userId + "']").css({ 'color': 'green' });
+    console.log(userId);
+});
+
+connection.on("ReciveMessage3", function (list) {       //invoke wrzucamy na server i metoda on - ortrzymaj coś z servera/ nasz klient który wysyłą też otrzyma to co wysyła
+    console.log(list);
+});

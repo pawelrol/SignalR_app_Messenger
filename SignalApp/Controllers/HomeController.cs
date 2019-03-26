@@ -59,8 +59,20 @@ namespace SignalApp.Controllers
 
         public IActionResult Index()
         {
-            string userId = _mgr.GetUserId(HttpContext.User);           //w ten sposób dostajemy się do zalogowanego usera do jego ID, wstrzyknęliśmy sobie do konstruktora Dependancy Injection klasą domyślnego usera (jest zdefiniowany w startup)
-            return View();
+            string userId = _mgr.GetUserId(HttpContext.User);   //wyciągamy od zalogowanego użytkownika jego Id - ono istniej w kontekscie
+            //lista znajomych których zaprosiłem
+            var friendList = _db.FriendLists.Where(x => x.UserId == userId).Select(x => x.FriendId).ToList();   //wyciągamy sobie z bazy danych listę znajomy w ktorej występuje nasz userId
+            //lista znajomych którzy mnie zaprosili
+            var requestList = _db.FriendLists.Where(x => x.FriendId == userId).Select(x => x.UserId).ToList();
+
+
+            //ze wszystkich uzytkownikow poprosze tych ktorych id znajduje się w jednej albo w drugiej liscie
+            var friends = _mgr.Users.Where(x => friendList.Contains(x.Id) || requestList.Contains(x.Id)).ToList();  // zdobyliśmy listę znajomych
+
+
+
+            // string userId = _mgr.GetUserId(HttpContext.User);           //w ten sposób dostajemy się do zalogowanego usera do jego ID, wstrzyknęliśmy sobie do konstruktora Dependancy Injection klasą domyślnego usera (jest zdefiniowany w startup)
+            return View(friends);
         }
 
         public IActionResult About()
